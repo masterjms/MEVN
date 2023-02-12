@@ -28,3 +28,14 @@
 - 사용자가 보는 페이지, 데이터처리, 이들을 중간에서 제어하는 뷰모델
 
 ### virtual DOM, 데이터 중심 그리고 컴포넌트 기반
+- vue.js에서는 뷰인스턴스로 관리하는 DOM에 대해 가상돔이라는 가상 객체를 만들어 기존의 DOM과 업데이트된 DOM을 매우 빠르게 비교해서 바꾸는 작업을 쉽게 한다.
+- 양방향 바인딩을 적용하여 데이터 중심으로만 생각가능하다. 즉 데이터가 갱신되었을때 DOM이 알아서 갱신되거나, 입력폼등 DOM의 데이터가 갱신되어도 실제 데이터가 변경된다. <br>
+💡 데이터 바인딩이란?  화면상에 보여지는 데이터(View)와 브라우저 메모리에 있는 데이터(Model)를 묶어서(Binding) 서로 간의 데이터를 동기화하는 것을 의미합니다. 예를 들어서 HTML에서 서버 혹은 스크립트상에서 받아온 데이터를 화면상에 그려주고 있다고 가정을 했을 때, 해당 값이 변경이 될 경우 다시 HTML 상에 데이터(값)를 변경된 값에 따라서 맞추어 주는 동작을 '데이터 바인딩'이라고 합니다.
+- 뷰인스턴스 : vue가 DOM을 관리하도록 부리는 일꾼이다. vue 인스턴스로 관리할 특정 DOM을 설정할 수 있다.
+- 컴포넌트 기반 : .vue 확장자로 이루어진 코드는 다음과 같다. template script style
+
+### 라이프사이클과 composition API
+- vue의 라이프 사이클은 다음과 같다. beforeCreate, created, beforeMount, mounted, beforeUpdated, beforeDestroy, destroyed
+- created : 컴포넌트가 생성된 단계. DOM에 vue인스턴스가 붙지 않아서 주로 ajax요청으로 데티어를 fetch하는데 쓰인다.
+- mounted : 컴포넌트 및 DOM에 인스턴스까지 붙은 상태. 부모 컨포넌트가 created된 후 자식 컴포넌트의 created, mounted 훅이 시작되고 이후 부모 컨포넌트의 mounted가 시작된다.
+- composition API : vue.js 3.0 부터는 created, mounted 에서 setup, onMounted를 사용한다.

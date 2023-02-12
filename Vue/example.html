@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <title>Vue.js 디렉티브와 바인딩</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Jua', sans-serif;
+        }
+
+        .e {
+            display: inline-block;
+            vertical-align: middle;
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+        }
+
+        .e .i {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            width: 84.5%;
+            border: 1px solid #f79d8b;
+            transform: translateX(-50%);
+            border-radius: 5px;
+            padding: 3px;
+        }
+
+        .e .t {
+            color: #f79d8b;
+            bottom: 28px;
+            position: relative;
+        }
+
+        h2 {
+            color: #f79d8b;
+            height: 28px; 
+        }
+        p{
+            height: 20px;  
+        }
+
+        .i>img {
+            width: 100%;
+        }
+
+        svg {
+            position: relative;
+            fill: #f79d8b;
+            stroke: white;
+            top: -1px;
+        }
+
+        .m {
+            width: 100%;
+            text-align: center;
+        }
+
+        .txt:focus {
+            outline: none;
+        }
+
+        .txt {
+            display: block;
+            width: 20%;
+            margin: 5px auto;
+            text-align: center;
+            border: 1px solid #f79d8b;
+            border-radius: 5px;
+            color: #f79d8b;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="m" id="MEVN"> 
+        <p><span v-show="flag">{{book_name}}</span> </p>  // {{}} 문법을 이용해 DOM에 바인딩 flag라는 변수의 참/거짓에 따라 book_name은 사라지거나 나타남.
+        <h2>{{txt}}</h2>
+        <input type="text" v-model="txt" class="txt"> // txt라는 변수를 input에 바인딩. v-model을 txt변수에 설정하여 입력 이벤트에 따라 변수도 변한다.
+        <div class="e" v-for="(e, idx) in list" :key="idx"> // v-for 디렉티브를 통해 list 배열 기반으로 여러개 DOM생성. :src를 통해 변수 바인딩
+            <div class="i">
+                <img :src="e.img" alt="">
+            </div>
+            <svg viewBox="0 0 93.3 100" class="">
+                <path d="M52.1 5.4l-5.4 5.4-5.4-5.4L46.6 0l5.5 5.4z"></path>
+            </svg>
+            <div class="t">{{e.msg}}</div> // 메시지 바인딩
+        </div>
+    </div>
+</body>
+<script src="https://unpkg.com/vue@next"></script>
+<script>
+    const main = {
+        data() {
+            return {
+                list: [{
+                        "img": "https://wnghdcjfe.github.io/1.png",
+                        "msg": "1."
+                    },
+                    {
+                        "img": "https://wnghdcjfe.github.io/2.png",
+                        "msg": "2."
+                    },
+                    {
+                        "img": "https://wnghdcjfe.github.io/3.png",
+                        "msg": "3."
+                    },
+                    {
+                        "img": "https://wnghdcjfe.github.io/4.png",
+                        "msg": "4"
+                    },
+                ],
+                txt: "절찬판매중!", 
+                book_name : "실시간 모니터링 시스템을 만들며 정복하는 MEVN", 
+                flag: 1 // 깜빡거림 변수 세팅
+            }
+        }, 
+        methods:{
+            toggle(){
+                this.flag ^= 1
+            }
+
+        }, 
+        mounted(){
+            setInterval(() => {
+                this.toggle()
+            }, 1000);
+        }
+    }
+    const app = Vue.createApp(main) // main이라는 변수 안에 vue.js를 이용한 데이터나 함수를 넣는다.
+    app.mount('#MEVN') // 뷰인스턴스 : id가 MEVN인 영역 선택
+</script>
+
+</html>
+
+// v-show와 v-if의 차이
+// 둘다 변수에 따라 참과 거짓을 판별하고 그로 인해 태그들을 사라지거나 나타나게 할 수있다.
+// v-show는 display:none으로 하여 안보이게 하지만, v-if는 아예 주석처리를 하기때문에 show는 토글이 많이 일어날때 사용하고, if는 조건이 자주 안바뀔때 사용한다.
