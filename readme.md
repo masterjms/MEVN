@@ -38,4 +38,16 @@
 - vue의 라이프 사이클은 다음과 같다. beforeCreate, created, beforeMount, mounted, beforeUpdated, beforeDestroy, destroyed
 - created : 컴포넌트가 생성된 단계. DOM에 vue인스턴스가 붙지 않아서 주로 ajax요청으로 데티어를 fetch하는데 쓰인다.
 - mounted : 컴포넌트 및 DOM에 인스턴스까지 붙은 상태. 부모 컨포넌트가 created된 후 자식 컴포넌트의 created, mounted 훅이 시작되고 이후 부모 컨포넌트의 mounted가 시작된다.
-- composition API : vue.js 3.0 부터는 created, mounted 에서 setup, onMounted를 사용한다.
+- composition API : vue.js 3.0 부터는 created, mounted 에서 setup, onMounted를 사용한다. 이를 사용하는 이유는 vue의 특징으로 컴포넌트 모듈을 객체형태로 선언하여 (props, data, methods, template, watch 등)책임소재를 분명히 한다. 이들이 모두 유기적으로 동작하기때문에 프로젝트 크기가 커지면 여기저기 점프를 하며 코드를 읽어야하는 일이 발생한다. 따라서 특정 기능과 관련된 변수와 메소드는 한곳에 모여있으면 가독성이 좋아지므로 composition API를 제공한다.
+- Vue 3에서는 컴포넌트 객체에 setup 함수를 사용할 수 있다. ref 를 사용해서 반응형 변수로 data를, 보통의 자바스크립트 함수로 methods를 대체한다. 라이프사이클 메소드는 onMounted, onUpdated 같은 라이프사이클 훅 함수가 대신한다. 반응형 변수의 변경 탐지 역시 watch 함수로 구현 가능하며 계산된 값을 위한 computed 함수도 제공된다. 컴포넌트 객체애서 속성으로 분리되었던 기능 대부분이 setup 함수 안에서 사용 가능하다. 
+
+### Vuex란 무엇인가?
+- vue개발에서 상태를 관리해주는 기능을 제공하는 것이 vuex이고 어플리케이션의 모든 컴포넌트들에 대한 중앙 집중식 저장소의 역할 및 관리를한다.
+- vuex가 없다면 컴포넌트간의 데이터(상태)를 주고 받기 위해서 부모는 자식에서 props를 통해 전달하고, 자식은 부모에게 emit event를 통해 처리해야한다. 이는 굉장히 복잡한 작업이 된다.
+- 이 문제를 해결해주는 것이 vuex이다. 데이터를 store이라는 곳을 통해서 관리하고 프로젝트에 존재하는 모든 컴포넌트들이 이 store를 사용하는 것.
+- vuex의 핵심 구성 요소 : state, Mutations, Actions, Getters
+- State(데이터 객체) : 공통으로 참조하기 위한 변수를 정의한것. 프로젝트의 모든 곳에서 이를 참조 가능하고 모든 컴포넌트들에서 공통된 값을 사용할 수 있다.
+- Mutaions(동기형 state변경 처리기) : state변경을 담당. 반드시 mutations을 통해서만 state를 변경해야함. commit방식으로 호출. mutaions내에 함수를 작성.
+- Actions(mutation 트리거) : mutation을 실행시키는 역할. 비동기 처리 기준이며 distpatch 방식으로 호출한다. 마찬가지로 actions 내에 함수를 작성. 비동기 기준이므로 콜백 함수로 작성.
+- Getters(공통속성) : 각 컴포넌트의 계산된 속성(computed)의 공통 속성으로 정의. 여러 컴포넌트에서 동일한 computed가 사용될 경우 Getters에 정의해서 공통으로 사용가능. 하위 모듈의 Getters를 불러오기 위해서는 this.$store.getters['경로명/함수명']; 을 사용함.
+
