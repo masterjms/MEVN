@@ -51,3 +51,19 @@
 - Actions(mutation 트리거) : mutation을 실행시키는 역할. 비동기 처리 기준이며 distpatch 방식으로 호출한다. 마찬가지로 actions 내에 함수를 작성. 비동기 기준이므로 콜백 함수로 작성.
 - Getters(공통속성) : 각 컴포넌트의 계산된 속성(computed)의 공통 속성으로 정의. 여러 컴포넌트에서 동일한 computed가 사용될 경우 Getters에 정의해서 공통으로 사용가능. 하위 모듈의 Getters를 불러오기 위해서는 this.$store.getters['경로명/함수명']; 을 사용함.
 
+## MongoDB - NoSQL
+### MongoDB 와 BSON
+- mongoDB는 JSON 매개변수를 받아 Binary JSON 형태로 저장된다. 즉 JSON형태로 데이터 삽입, 수정, 조회하는 쿼리가 모두 가능하다.
+- Node.js에서 MongoDB를 접근하는데 필요한 모듈에는 Mongoose, MongoDB 드라이버 2개가 있다.
+- RDBMS(관계형데이터베이스)에서는 데이터베이스 - 테이블 - 데이터로 계층화되어 있다. 반면 MongoDB에서는 데이터베이스 - 컬렉션 - 도큐먼트로 계층화 되어 있다. 데이터라고 불리는 것이 document라고 mongoDB에서는 부른다.
+### MongoDB Storage Engines
+- 스토리지 엔진은 데이터 서버의 디스크에서 사용자가 요청한 데이터를 어떻게 가져오고 저장할지 결정한다.wiredTiger엔진은 LSM Tree라는 로그 기반 병합트리를 이용하여 읽기 성능을 포기하고 저장 기능을 향상시키고 느린 읽기 성능을 보완하기 위해 블룸 필터를 사용한 엔진이다.
+### MongoDB에서의 transaction
+- insert나 find와 같은 커리를 client에서 보내면 어떤 로직으로 처리하게 될것인가?
+- 먼저 쿼리를 수행 전 journal log에 저장되는 저널링이 이루어진다. 쿼리 수행 실패시 롤백하기 위해서 로그를 남기는것이다.
+- 동시에 Buffer Pool로 들어가 checkpoint, 즉 메모리 버퍼와 디스크 간의 데이터 불일치를 해소하기 위해 메모리 -> 디스크로 데이터를 동기화하는 작업이 일어난다. 즉 수정사항을 디스크에 반영시키는 것.
+- 마지막으로 eviction, 메모리 버퍼에서 필요 없는 데이터들을 삭제하는 작업이 일어난다.
+### MongoDB 특징
+- document는 key와 value형태로 이루어져 있고, _id라는 고유한 아이디를 가진다. 또한 key의 길이도 내용으로 들어간다. JSON을 매개변수로 받아 BSON으로 DB에 삽입되기 때문에 type변환이 일어나지 않는다.
+- 스키마없이 삽입이 가능하다. 스키마란 DB를 구성하는 속성, 관계 등 데이터 값이 갖는 type을 명시하는 것을 말한다. RDBMS의 경우 한 스키마가 int, char[14]인 경우 그 안에 들어가는 데이터인 18바이트만 저장되지만, 
+mongoDB는 한개의 document로 칼럼 이름도 바이트에 추가된다. key-value형태로 들어가기 때문. 예를 들어 comments:string이란 type으로 정해놓고 DB에 저장한다면 comments라는 길이의 byte, 즉 8byte가 각각 더들어간다.
