@@ -67,3 +67,9 @@
 - document는 key와 value형태로 이루어져 있고, _id라는 고유한 아이디를 가진다. 또한 key의 길이도 내용으로 들어간다. JSON을 매개변수로 받아 BSON으로 DB에 삽입되기 때문에 type변환이 일어나지 않는다.
 - 스키마없이 삽입이 가능하다. 스키마란 DB를 구성하는 속성, 관계 등 데이터 값이 갖는 type을 명시하는 것을 말한다. RDBMS의 경우 한 스키마가 int, char[14]인 경우 그 안에 들어가는 데이터인 18바이트만 저장되지만, 
 mongoDB는 한개의 document로 칼럼 이름도 바이트에 추가된다. key-value형태로 들어가기 때문. 예를 들어 comments:string이란 type으로 정해놓고 DB에 저장한다면 comments라는 길이의 byte, 즉 8byte가 각각 더들어간다.
+- MongoDB는 서버 이중화를 통해 운영서버가 멈추지 않도록 한다. ReplicaSet을 이용한다. 데이터 양이 많은 경우에는 collection을 분할해 관리한다.
+- B-tree를 적용한 인덱싱을 사용한다. 인덱싱이란 무엇인가 찾을 때 사용된다. 인덱스는 B-tree로 구성되어 있고, 2차원 자표 인덱싱의 경우 R-tree로 구성되어 있다.
+- transaction 과정에서 MongoDB의 buffer Pool이 서버 메모리의 50%를 차지한다.
+- 데이터의 조합 함수를 지원한다. min, max, aggregate, mapReduce 등 데이터를 추출하고 조합해서 압축된 결괏값을 만들어 낼수 있다.
+### MongoDB의 한계
+- MongoDB의 저장 형식인 BSON document의 크기는 최대 16MB로 제한된다. 이때 BSON document의 깊이의 최대는 100lv까지 가능하며, 데이터베이스 name은 64자보다 작아야하며, 이또한 데이터에 포함되므로 이름도 짧게 해야한다.
