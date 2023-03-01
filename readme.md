@@ -53,6 +53,7 @@
 
 ## MongoDB - NoSQL
 ### MongoDB 와 BSON
+- 스키마란? 데이터베이스를 구성하는 레코드의 크기, 키(key)의 정의, 레코드와 레코드의 관계, 검색 방법 등을 정의한 것.
 - mongoDB는 JSON 매개변수를 받아 Binary JSON 형태로 저장된다. 즉 JSON형태로 데이터 삽입, 수정, 조회하는 쿼리가 모두 가능하다.
 - Node.js에서 MongoDB를 접근하는데 필요한 모듈에는 Mongoose, MongoDB 드라이버 2개가 있다.
 - RDBMS(관계형데이터베이스)에서는 데이터베이스 - 테이블 - 데이터로 계층화되어 있다. 반면 MongoDB에서는 데이터베이스 - 컬렉션 - 도큐먼트로 계층화 되어 있다. 데이터라고 불리는 것이 document라고 mongoDB에서는 부른다.
