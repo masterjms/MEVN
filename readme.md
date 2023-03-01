@@ -11,7 +11,23 @@
 - 일처리하는 엔진. 크롬 등 많이 사용중임. JIT(just in time) 즉 프로그램을 실행하는 시점에서 기계어로 번역하는 컴파일 기법이란 특징이 있다.
 ### 자바스크립트 런타임
 - 런타임이란 프로그램이 실행될때 프로그램이 머무는 공간을 의미. 브라우저가 자바스크립트의 런타임이기도 함. 브라우저 공간안에서 js 프로그램을 실행 가능하기 때문이다. 즉 자바스크립트로 
-만든 게임, 알고리즘, 서버 등 많은 것을 실행할 수 있다. 
+만든 게임, 알고리즘, 서버 등 많은 것을 실행할 수 있다.
+### JSON의 기초
+- {"이름" : "큰돌"} 이런 구조를 JSON Object라고 부른다.
+- 문자열 -> 객체로 만들기 위해서는 JSON.parse
+- 객체 -> 문자열로 만들기 위해서는 JSON.stringify<br>
+<code>
+let a = '{"이름":"큰돌"}'<br>
+console.log(typeof a)<br>
+// string<br>
+console.log(a.이름)<br>
+// 문자열 string이므로 undefinded<br>
+a = JSON.parse(a)<br>
+console.log(typeof a)<br>
+// object<br>
+console.log(a.이름)<br>
+// 큰돌<br>
+</code>
 
 ## Express로 서버구축 및 로거
 ### express?
