@@ -90,3 +90,22 @@ mongoDB는 한개의 document로 칼럼 이름도 바이트에 추가된다. key
 - 데이터의 조합 함수를 지원한다. min, max, aggregate, mapReduce 등 데이터를 추출하고 조합해서 압축된 결괏값을 만들어 낼수 있다.
 ### MongoDB의 한계
 - MongoDB의 저장 형식인 BSON document의 크기는 최대 16MB로 제한된다. 이때 BSON document의 깊이의 최대는 100lv까지 가능하며, 데이터베이스 name은 64자보다 작아야하며, 이또한 데이터에 포함되므로 이름도 짧게 해야한다.
+### MongoDB의 기본적인 문법 - data base
+1. 명령 프롬프트(터미널)에서 mongod 입력
+2. 새로운 터미널 창을 켜서 mongo 입력
+3. 새로운 데이터베이스 생성 : use sensor로 일단 데이터 베이스로 이동
+4. show dbs로 어떤 데이터 베이스가 있는지 확인 
+5. db.sensor.insert({"user":1})으로 데이터 베이스 추가
+6. 이후 show dbs하면 sensor라는 베이스가 생겼을것.<br>
+use를 통해 db로 이동한 다음 어떤 데이터를 삽입하기만 하면 db를 만들 수 있다.
+### MongoDB의 기본적인 문법 2 - root user
+1. db.createUser({user : 유저이름, pwd: 패스워드, roles : 권한})과 같은 형식으로 root유저를 만들어 절대 권한을 가지게 한다.
+2. use admin을 통해 admin이라는 db로 이동하고 root유저를 생성.
+3. db.createUser({user:"root", pwd: "root123", roles:["userAdminAnyDataBase"], mechanisms : ["SCRAM-SHA-1"]}) - 관리자로서 모든 데이터베이스에 접근 가능.
+### MongoDBdml 기본적인 문법 3 - 일반유저 생성
+sensor데이터베이스에 유저를 추가하기
+1. use sensor
+2. db.createUser({user:"minsung", pwd:"minsung1234", roles:["readWrite"], mechanisms: ["SCRAM-SHA-1"]})
+### 유저관련 함수
+- db.getUser() - 현재 db에 있는 유저의 목록을 출력
+- db.dropUser("user") - 
