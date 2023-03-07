@@ -108,4 +108,7 @@ sensor데이터베이스에 유저를 추가하기
 2. db.createUser({user:"minsung", pwd:"minsung1234", roles:["readWrite"], mechanisms: ["SCRAM-SHA-1"]})
 ### 유저관련 함수
 - db.getUser() - 현재 db에 있는 유저의 목록을 출력
-- db.dropUser("user") - 
+- db.dropUser("user") - 삭제
+### MongoDB의 인덱싱
+- DB는 B-Tree자료구조를 기본으로 인덱싱한다. 이진트리의 확장개념으로 2개의 자식 노드가 아닌 여러개의 자식을 가질 수 있다.
+- db.users.createIndex({id : 1})이라고 하면 id를 오름차순으로 뽑아낸다. find를 이용해 users.find().sort({"id":1}).limit(100)이라고 할 수 있겠지만 훨씬 느릴것.
