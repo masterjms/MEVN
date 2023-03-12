@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://d3js.org/d3.v7.min.js"></script> 
+    <title>D3기초 - circle과 scale</title>
+    <style>
+        circle {
+            fill: #41B883;
+            stroke: #34495E;
+        }
+
+        svg {
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <svg>
+    </svg>
+</body>
+<script>
+    const margin = {
+        left: 50,
+        right: 50
+    }
+    const data = [0, 50, 100]
+    const width = 400 // 스케치북의 크기는 0-400의 크기를 가짐
+    const xScale = d3.scaleLinear() // 선형적인 스케치북
+    .domain([d3.min(data), d3.max(data)])
+    .range([0 + margin.left, width + margin.right]) // 데이터를 표시할 스케치북
+    const svg = d3.select("svg")
+    const make_circle1 = () => {
+        svg.append("circle")
+        .attr("cx", xScale(0)) // xScale의 range가 400이므로 0이면 0, 50이면 200, 100이면 400이다.
+        .attr("cy", 70)
+        .attr("r", 40)
+        svg.append("circle")
+        .attr("cx", xScale(50))
+        .attr("cy", 70)
+        .attr("r", 40)
+        svg.append("circle")
+        .attr("cx", xScale(100))
+        .attr("cy", 70)
+        .attr("r", 40)
+    }
+    make_circle1()
+    const make_circle2 = () => {
+        svg.selectAll("circle") // 실제로는 svg circle DOM은 존재하지 않는다.
+        .data(data) // 데이터 개수에 따라 가상 circle이 생성
+        .enter()
+        .append("circle")
+        .attr("cx", d => xScale(d))
+        .attr("cy", 70)
+        .attr("r", 40)
+    }
+    make_circle2()
+</script>
+
+</html>
