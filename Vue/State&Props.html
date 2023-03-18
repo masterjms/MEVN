@@ -1,0 +1,128 @@
+State 와 Props------------------
+기존의 jQuery 와 다르게 vue 는 document 에 직접적인 접근을 하여 DOM을 제어하지 않습니다.
+그대신 state 라는 상태를 이용하여 DOM 을 관리합니다. 
+그렇다면 state 와 props 는 무엇일까요 ?
+쉽게 말씀드리자면 state 는 나의 data, props 는 누구로부터 받는 data 입니다. 
+여기서 누구는 보통 부모 component 또는 상태머신(vuex)입니다.
+
+
+state 다뤄보기-------------------
+일단 Box component 를 만들어야합니다.
+
+component 의 state 는 data 라는 함수를 이용하여 구성할 수 있습니다.
+// Box.vue 
+
+<script>
+export default {
+  data() {  // Box 의 state
+    return {
+      width: 40, // 넓이
+      height: 80 // 높이
+    };
+  }
+};
+</script>
+
+
+State 를 이용하여 Style 적용하기---------------------
+위에서 만들어 놓은 state 를 바탕으로 box 를 그려보겠습니다
+vue 에 관련된 무엇인가를 적용하기 위해서는 v-bind 라는 것을 이용해야합니다.
+html tag 에 인라인으로 스타일을 적용할 때는 v-bind:style 또는 v-bind 를 생략한 :style 를 이용합니다.
+<div v-bind:style="{color: #ebebeb}"></div>
+<div :style="{color: #ebebeb}"></div>
+box 에 state 값을 바탕으로 스타일을 적용해보겠습니다.
+// Box.vue 
+
+<template>
+  <div v-bind:style="{ width: width + 'px', height: height + 'px' }"></div>
+</template>
+
+
+
+Props -----------------------
+우리는 여러개의 Box 를 만들고 싶어 졌습니다. 그래서 App.vue 에서 Box 여러개를 더 추가하였습니다.
+// App.vue 
+
+<template>
+  <div>
+    <Box/>
+    <Box/>
+    <Box/>
+    <Box/>
+    <Box/>
+    <Box/>
+  </div>
+</template>
+
+박스별로 색상을 다르게 주고 싶어 졌습니다. Box.vue 에 색상 class 들을 추가해보겠습니다. class 가 변경됨에 따라 background 색상이 변경되도록 하겠습니다.
+// Box.vue 
+
+<style scoped>
+.box {
+  border: 1px solid #000;
+}
+.blue {
+  background: #009bff;
+}
+.purple {
+  background: #8f46ff;
+}
+.green {
+  background: #00bcac;
+}
+</style>
+
+Box 별로 색상을 다르게 주기 위해서는 어떻게 하면될까요 ? 가장 간단한 방법은 Box component 를 사용하는 곳에서 Box component 로 사용할 color class 를 전달해주면 됩니다. 
+<Box color="blue"/>
+위와 같이 전달해주기 위해서는 Box component 를 사용하고 있는 App.vue 에서 전달해야겠죠 :) 
+// App.vue 
+
+<template>
+  <div>
+    <Box color="blue"/>
+    <Box color="purple"/>
+    <Box color="green"/>
+    <Box color="blue"/>
+    <Box color="purple"/>
+    <Box />
+  </div>
+</template>
+
+그렇다면 Box 에서는 부모 component 인 App.vue 에서 내려준 값 (Box 입장에서는 이 값을 props 라고 부릅니다) 을 어떻게 받을 수 있을까요?
+
+값을 받을 component 즉 Box.vue 에서 다음과 같이 props 를 이용하여 받을 수 있습니다.
+type 을 적어줌으로써 props 에 대한 안전함을 보장할 수 있습니다. 
+해당 props 가 내려오지 않았을 경우를 방지하기 위해 default 값 또한 줄 수 있습니다.
+props: {
+    color: { type: String, default: '' }
+}
+Box.vue 에 추가해보겠습니다.
+// Box.vue 
+
+<script>
+export default {
+  props: {
+    color: { type: String, default: "" }
+  },
+  data() {
+    return {
+      width: 40,
+      height: 80
+    };
+  }
+};
+</script>
+
+
+Props 를 바탕으로 class bind 해보기----------------
+App.vue 에서 내려주는 color 라는 값을 받을 수 있게 되었습니다. 이제 내려 받은 값을 Box component 에 class 로 적용해주기만 하면 됩니다.
+props 나 state 를 바탕으로 class 를 적용해주기 위해서는 v-bind:class 또는 :class 를 이용해야 합니다.
+<div v-bind:class="[state, props]"></div>
+<div :class="[state, props]"></div>
+위의 내용을 바탕으로 Box 에 적용해보겠습니다.
+<template>
+  <div 
+    v-bind:class="['box', color]" 
+    v-bind:style="{ width: width + 'px', height: height + 'px' }">
+  </div>
+</template>

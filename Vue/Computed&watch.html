@@ -1,0 +1,150 @@
+Computed 
+연산 결과를 캐싱해주는 computed 에 대해서 알아보겠습니다.
+// App.vue 
+
+<template>
+  <div id="app">
+    {{ message }}
+  </div>  
+</template>
+
+<script>
+
+export default {
+  name: 'app',
+  data () {
+    return {
+      message: 'Hello Vue !!'
+    }
+  }
+}
+</script>
+
+캐슁이란 저장한다는 뜻이다.
+컴퓨팅에서 캐슁이란 오랜시간이 걸리는 작업의 결과를 저장해서 시간과 비용을 필요로 회피하는 기법을 의미한다. 
+캐슁은 고성능 에플리케이션을 만드는데 가장 중요한 요소 중의 하나다.
+
+
+Computed cashing-----------------------
+템플릿 영역에 연산처리를 넣을 수 있습니다. 하지만 state 또는 props 가 변경될 때마다 re-render 되기 때문에 매번 연산을 해야된다는 부담이 있습니다. 
+이런 부담을 줄이고자 우리는 computed 라는 것을 이용하여 연산결과를 캐싱하여 사용할 수 있습니다. 
+<template>
+  <div id="app">
+    {{ message }}
+    <h2>뒤집힌 message</h2>
+    {{ reversedMessage }}
+  </div>  
+</template>
+
+<script>
+
+// export default 
+{
+  name: 'app',
+  data () {
+    return {
+      message: 'Hello Vue !!'
+    }
+  },
+  computed: {
+    reversedMessage () {
+      return this.message.split("").reverse().join("")
+    }
+  }
+}
+</script>
+computed 는 대상(ex. message) 을 따라 연산결과가 캐싱됩니다. 대상인 message 가 변경되지 않는다면 이미 연산처리된 즉, 캐싱처리되어있는 reversedMessage 를 가져옵니다.
+Method 에서도 같은 역할을 할 수 있지 않나요 ?
+물론 가능합니다. 결과는 같습니다. 하지만 함수의 경우는 re-render 될 때마다 실행되기 때문에 캐싱 이득을 취할 수 없습니다.
+methods: {
+  reversedMessage2 () {
+    return this.message.split("").reverse().join("")
+  }
+}
+
+
+
+
+Watch -------------------------------------
+state 나 props 를 감시하고 해당 값이 변경 되었을 때의 행동을 지정할 수 있는 watch 라는 속성에 대해서 알아보겠습니다.
+fistname, lastname 을 적을 수 있는 input 을 준비하고 입력된 값을 합쳐 full name 을 출력하고 싶습니다.
+<template>
+  <div id="app">    
+    <input v-model="firstname" />
+    <input v-model="lastname"/>
+
+    <h2>full name</h2>
+    <span></span>
+  </div>  
+</template>
+
+<script>
+
+// export default
+ {
+  name: 'app',
+  data () {
+    return {
+      firstname: '',
+      lastname: ''
+    }
+  }
+}
+</script>
+
+
+먼저 watch 를 이용하여 출력해보겠습니다.
+export default {
+  name: 'app',
+  data () {
+    return {
+      firstname: '',
+      lastname: ''
+    }
+  },
+  watch: {
+    firstname (val) {
+      console.log('fistname', val)
+    },
+    lastname (val) {
+      console.log('lastname', val)
+    }
+  }
+}
+watch 할 대상을 적어주고 대상의 값이 변경되었을 때의 행동을 적어줍니다.
+
+fullname 이라는 state 값을 추가하고 watch 의 값이 바뀔 때마다 fullname 의 값을 변경하도록 하였습니다.
+<template>
+  <div id="app">    
+    <input v-model="firstname" />
+    <input v-model="lastname"/>
+
+    <h2>full name</h2>
+    <span>{{ fullname }}</span>
+  </div>  
+</template>
+
+<script>
+
+// export default 
+{
+  name: 'app',
+  data () {
+    return {
+      firstname: '',
+      lastname: '',
+      fullname: ''
+    }
+  },
+  watch: {
+    firstname (val) {
+      this.fullname = `${val} ${this.lastname}`
+    },
+    lastname (val) {
+      this.fullname = `${this.firstname} ${val}`
+    }
+  }
+}
+</script>
+
+하지만 위같은 처리를 하기위해 watch 는 좋은방법이 아닙니다. computed 라는 더 좋은 친구가 있기 때문입니다. 
